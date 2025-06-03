@@ -4,13 +4,15 @@
 
 #include "Dictionary.h"
 #include <fstream>
+#include <QFile>
 
 void Dictionary::load(const std::string &filePath) {
-    std::ifstream input(filePath);
-    if (!input) throw std::runtime_error("Could not open dictionary file: " + filePath);
+    QFile input(QString::fromStdString(filePath));
+    if (!input.open(QIODeviceBase::ReadOnly)) throw std::runtime_error("Could not open dictionary file: " + filePath);
 
     std::string word;
-    while (input >> word) {
+    while (input.canReadLine()) {
+        word = input.readLine().toStdString();
         if (word.size() < 100) {
             auto res = graph.addNode(word);
             if (!res) continue;
