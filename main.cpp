@@ -9,9 +9,9 @@ int main(int argc, char *argv[]) {
 
     dictionary.load(":/dictionary.txt");
 
-    MainWindow main;
+    MainWindow main(dictionary);
     main.setWindowTitle("Word Ladder");
-    main.setMinimumSize({800, 640});
+    main.setMinimumSize({800, 800});
     main.show();
     return QApplication::exec();
 }

@@ -26,6 +26,7 @@ public:
         nodeIds[node] = nodes;
         reverseNodeIds[nodes] = node;
         nodes++;
+        adj.emplace_back();
         return true;
     }
 
@@ -40,13 +41,13 @@ public:
         }
     }
 
-    std::map<T, unsigned int> getDistances(const T &sourceNode) const {
+    std::pair<std::map<T, unsigned int>, std::map<T, T>> getDistances(const T &sourceNode) const {
         std::map<T, unsigned int> distances;
+        std::map<T, T> prev;
         if (nodeIds.count(sourceNode) == 0) throw std::invalid_argument("Source node does not exist in the graph!");
 
         unsigned int start = nodeIds.at(sourceNode);
         distances[sourceNode] = 0;
-
         std::queue<unsigned int> queue;
         queue.push(start);
 
@@ -59,10 +60,11 @@ public:
                 if (distances.count(node)) continue;
                 queue.push(nextId);
                 distances[node] = distances[reverseNodeIds.at(top)] + 1;
+                prev[node] = reverseNodeIds.at(top);
             }
         }
 
-        return distances;
+        return {distances, prev};
     }
 };
 

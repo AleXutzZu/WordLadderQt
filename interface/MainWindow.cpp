@@ -6,7 +6,7 @@
 #include "AnalysisWidget.h"
 #include <QToolBar>
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
+MainWindow::MainWindow(const Dictionary &dictionary, QWidget *parent) : QMainWindow(parent), dictionary(dictionary) {
     setUpUI();
 }
 
@@ -39,7 +39,7 @@ void MainWindow::setUpUI() {
     toolbar->addWidget(spacer2);
 
     stack = new QStackedWidget(this);
-    stack->addWidget(new AnalysisWidget());
+    stack->addWidget(new AnalysisWidget(dictionary));
 
     setCentralWidget(stack);
 }

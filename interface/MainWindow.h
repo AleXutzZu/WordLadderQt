@@ -7,20 +7,24 @@
 
 #include <QMainWindow>
 #include <QStackedWidget>
+#include "../Dictionary.h"
 
 class MainWindow : public QMainWindow {
 Q_OBJECT
 
 private:
-    QAction *playAction;
-    QAction *analysisAction;
-    QAction *leaderboardAction;
-    QStackedWidget *stack;
+    QAction *playAction{};
+    QAction *analysisAction{};
+    QAction *leaderboardAction{};
+    QStackedWidget *stack{};
+
+    const Dictionary &dictionary;
+
     void setUpUI();
 
 public:
 
-    MainWindow(QWidget *parent = nullptr);
+    MainWindow(const Dictionary &dictionary, QWidget *parent = nullptr);
 
 
 };

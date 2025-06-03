@@ -1,23 +1,47 @@
-import nltk
-import random
+import networkx as nx
+from collections import defaultdict
+from itertools import combinations
 
-# Make sure you've downloaded the corpus at least once
-nltk.download('words')
 
-from nltk.corpus import words
+def load_words(min_len=4, max_len=8):
+    with open("words_alpha.txt") as f:
+        words = set(w.strip().lower() for w in f if w.strip().isalpha())
+    return [w for w in words if min_len <= len(w) <= max_len]
 
-# Filter words: length between 4 and 8, alphabetic only, lowercase
-word_list = [w.lower() for w in words.words() if 4 <= len(w) <= 8 and w.isalpha()]
 
-# Remove duplicates
-unique_words = list(set(word_list))
+def is_one_letter_apart(a, b):
+    if len(a) != len(b):
+        return False
+    diff = sum(c1 != c2 for c1, c2 in zip(a, b))
+    return diff == 1
 
-# Shuffle and select 1000 unique words
-selected_words = random.sample(unique_words, 1000)
 
-# Save to a text file, one word per line
-with open("word_ladder_dictionary.txt", "w") as f:
-    for word in selected_words:
-        f.write(word + "\n")
+def build_graph(words):
+    buckets = defaultdict(list)
+    for word in words:
+        for i in range(len(word)):
+            key = word[:i] + "_" + word[i + 1:]
+            buckets[key].append(word)
 
-print("Dictionary created: word_ladder_dictionary.txt")
+    G = nx.Graph()
+    G.add_nodes_from(words)
+    for bucket in buckets.values():
+        for w1, w2 in combinations(bucket, 2):
+            G.add_edge(w1, w2)
+    return G
+
+
+def save_largest_component(graph, filename="filtered_dictionary.txt"):
+    largest_cc = max(nx.connected_components(graph), key=len)
+    with open(filename, "w") as f:
+        for word in sorted(largest_cc):
+            f.write(word + "\n")
+    print(f"Saved {len(largest_cc)} well-connected words to {filename}")
+
+
+if __name__ == "__main__":
+    # load_words(4, 8)
+    words = load_words()
+    print(f"Loaded {len(words)} words.")
+    graph = build_graph(words)
+    save_largest_component(graph)
