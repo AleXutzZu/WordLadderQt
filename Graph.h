@@ -44,7 +44,7 @@ public:
         std::map<T, unsigned int> distances;
         if (nodeIds.count(sourceNode) == 0) throw std::invalid_argument("Source node does not exist in the graph!");
 
-        unsigned int start = nodeIds[sourceNode];
+        unsigned int start = nodeIds.at(sourceNode);
         distances[sourceNode] = 0;
 
         std::queue<unsigned int> queue;
@@ -55,10 +55,10 @@ public:
             queue.pop();
 
             for (const auto &nextId: adj[top]) {
-                T node = reverseNodeIds[nextId];
+                T node = reverseNodeIds.at(nextId);
                 if (distances.count(node)) continue;
                 queue.push(nextId);
-                distances[node] = distances[reverseNodeIds[top]] + 1;
+                distances[node] = distances[reverseNodeIds.at(top)] + 1;
             }
         }
 
