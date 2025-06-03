@@ -14,7 +14,10 @@ find_package(Qt6 COMPONENTS
         Widgets
         REQUIRED)
 
+qt6_add_resources(RESOURCES resources/resources.qrc)
+
 add_executable(WordLadder main.cpp
+        ${RESOURCES}
         Graph.h
         Dictionary.cpp
         Dictionary.h
@@ -22,6 +25,7 @@ add_executable(WordLadder main.cpp
         interface/MainWindow.h
         interface/AnalysisWidget.cpp
         interface/AnalysisWidget.h)
+
 target_link_libraries(WordLadder
         Qt::Core
         Qt::Gui
