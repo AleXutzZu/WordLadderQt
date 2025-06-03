@@ -6,11 +6,23 @@
 #define WORDLADDER_MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QStackedWidget>
 
 class MainWindow : public QMainWindow {
 Q_OBJECT
 
 private:
+    QAction *playAction;
+    QAction *analysisAction;
+    QAction *leaderboardAction;
+    QStackedWidget *stack;
+    void setUpUI();
+
+public:
+
+    MainWindow(QWidget *parent = nullptr);
+
+
 };
 
 

@@ -20,8 +20,8 @@ add_executable(WordLadder main.cpp
         Dictionary.h
         interface/MainWindow.cpp
         interface/MainWindow.h
-        interface/MainToolbar.cpp
-        interface/MainToolbar.h)
+        interface/AnalysisWidget.cpp
+        interface/AnalysisWidget.h)
 target_link_libraries(WordLadder
         Qt::Core
         Qt::Gui
