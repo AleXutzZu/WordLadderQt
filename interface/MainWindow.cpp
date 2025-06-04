@@ -5,6 +5,7 @@
 #include "MainWindow.h"
 #include "AnalysisWidget.h"
 #include "PlayWidget.h"
+#include "LeaderboardWidget.h"
 #include <QToolBar>
 
 MainWindow::MainWindow(const Dictionary &dictionary, QWidget *parent) : QMainWindow(parent), dictionary(dictionary) {
@@ -43,6 +44,7 @@ void MainWindow::setUpUI() {
     stack = new QStackedWidget(this);
     stack->addWidget(new AnalysisWidget(dictionary));
     stack->addWidget(new PlayWidget(dictionary));
+    stack->addWidget(new LeaderboardWidget());
     setCentralWidget(stack);
 }
 

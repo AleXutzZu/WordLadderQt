@@ -34,7 +34,9 @@ add_executable(WordLadder main.cpp
         game/GameData.cpp
         game/GameData.h
         game/User.cpp
-        game/User.h)
+        game/User.h
+        interface/LeaderboardWidget.cpp
+        interface/LeaderboardWidget.h)
 
 target_link_libraries(WordLadder
         Qt::Core
