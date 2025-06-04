@@ -73,6 +73,9 @@ void LeaderboardWidget::setUpUI() {
 
 void LeaderboardWidget::setUpConnections() {
     connect(searchForStats, &QPushButton::clicked, this, &LeaderboardWidget::onSearchButtonClick);
+    connect(refreshLeaderboard, &QPushButton::clicked, top, [this]() {
+        top->update();
+    });
 }
 
 void LeaderboardWidget::onSearchButtonClick() {
@@ -94,5 +97,5 @@ void LeaderboardWidget::onSearchButtonClick() {
     winsLabel->setText(QString("Total wins: %1").arg(userData.getWins()));
     lossesLabel->setText(QString("Total loses: %1").arg(userData.getLosses()));
     wlrLabel->setText(QString("Win/Lose ratio: %1").arg(userData.getWLR()));
-    lastGame->setText(QString("Last game: Unknown"));
+    lastGame->setText(QString("Last game: %1").arg(userData.getLastGame()));
 }
