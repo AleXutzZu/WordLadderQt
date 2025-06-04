@@ -6,9 +6,10 @@
 
 #include <utility>
 #include <fstream>
+#include <filesystem>
 
 User::User(std::string username) : username(std::move(username)) {
-    load();
+    load(this->username);
 }
 
 int User::getWins() const {
@@ -32,18 +33,26 @@ float User::getWLR() const {
 
 void User::load(const std::string &username) {
     this->username = username;
+    std::filesystem::create_directories("gameData");
     std::ifstream input("gameData/" + username + ".csv");
-    if (!input) throw std::runtime_error("Could not open file");
+
+    if (!input) {
+        //No previous data, creating new...
+        std::ofstream out;
+        out.open("gameData/" + username + ".csv");
+        out.flush();
+        return;
+    }
 
     GameData gameData;
     while (input >> gameData) {
-        games.push_back(std::move(gameData));
+        games.push_back(gameData);
     }
 }
 
 void User::saveGame(const GameData &gameData) {
     if (username.empty()) throw std::runtime_error("Cannot save game of non-loaded user");
-    std::ofstream gameFile("gameData/" + username + ".csv", std::ios::out | std::ios::ate);
+    std::ofstream gameFile("gameData/" + username + ".csv", std::ios::out | std::ios::app);
 
     gameFile << gameData << '\n';
     games.push_back(gameData);
