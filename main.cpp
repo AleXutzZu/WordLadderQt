@@ -11,7 +11,8 @@ int main(int argc, char *argv[]) {
 
     MainWindow main(dictionary);
     main.setWindowTitle("Word Ladder");
-    main.setMinimumSize({800, 800});
+//    main.setMinimumSize({800, 800});
+    main.setFixedSize({800, 800});
     main.show();
     return QApplication::exec();
 }
