@@ -26,7 +26,11 @@ add_executable(WordLadder main.cpp
         interface/AnalysisWidget.cpp
         interface/AnalysisWidget.h
         interface/ArrowOverlay.cpp
-        interface/ArrowOverlay.h)
+        interface/ArrowOverlay.h
+        interface/PlayWidget.cpp
+        interface/PlayWidget.h
+        interface/GameDialog.cpp
+        interface/GameDialog.h)
 
 target_link_libraries(WordLadder
         Qt::Core
