@@ -5,75 +5,95 @@
 #include "ChampionsWidget.h"
 #include <QPainter>
 #include <filesystem>
-#include "../game/User.h"
 #include <algorithm>
 
 ChampionsWidget::ChampionsWidget(QWidget *parent) : QWidget(parent) {
-    setMinimumSize(400, 250);
+    setMinimumSize(400, 300);
 }
 
 void ChampionsWidget::paintEvent(QPaintEvent *event) {
-    auto names = getTopThree();
-    Q_UNUSED(event)
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
 
-    // Define sizes
+    // Draw "Champions" text at the top center in big font
+    QFont titleFont("Arial", 24, QFont::Bold);
+    painter.setFont(titleFont);
+    QString title = "Champions";
+    QFontMetrics fmTitle(titleFont);
+    int titleWidth = fmTitle.horizontalAdvance(title);
+    painter.drawText((width() - titleWidth) / 2, 40, title);
+
+    std::vector<QString> labels;
+    std::vector<QString> wins;
+
+    auto users = getTopThree();
+    for (const auto &user: users) {
+        labels.push_back(QString::fromStdString(user.getUsername()));
+        wins.push_back(QString::number(user.getWins()));
+    }
+
+    while (labels.size() != 3) {
+        labels.emplace_back("N/A");
+        wins.emplace_back("0");
+    }
+    std::swap(wins[0], wins[1]);
+    std::swap(wins[0], wins[2]);
+    std::swap(labels[0], labels[1]);
+    std::swap(labels[0], labels[2]);
+
+    QFont labelFont("Arial", 12, QFont::Bold);
+    painter.setFont(labelFont);
+    QFontMetrics fmLabel(labelFont);
+
+    // Pedestal dimensions and spacing
     int pedestalWidth = 100;
-    int spacing = 30;
+    int pedestalHeights[3] = {100, 160, 120};
+    QColor pedestalColors[3] = {QColor(205, 127, 50), QColor(255, 215, 0),
+                                QColor(192, 192, 192),};
+    int spacing = 40;
 
-    int bronzeHeight = 100;
-    int silverHeight = 140;
-    int goldHeight = 180;
-
+    // Total width of all pedestals + spacing
     int totalWidth = pedestalWidth * 3 + spacing * 2;
     int startX = (width() - totalWidth) / 2;
-    int bottom = height() - 20;
+    int baseY = 280;  // baseline for pedestals
 
-    // X positions relative to startX
-    int bronzeX = startX;
-    int goldX = startX + pedestalWidth + spacing;
-    int silverX = startX + 2 * (pedestalWidth + spacing);
+    // Draw each pedestal with labels
+    for (int i = 0; i < 3; ++i) {
+        int x = startX + i * (pedestalWidth + spacing);
+        int height = pedestalHeights[i];
+        int y = baseY - height;
 
-    // Draw Gold pedestal
-    painter.setBrush(QColor(255, 215, 0)); // Gold
-    painter.drawRect(goldX, bottom - goldHeight, pedestalWidth, goldHeight);
+        // Draw label above pedestal
+        QString label = labels[i];
+        int labelWidth = fmLabel.horizontalAdvance(label);
+        int labelX = x + (pedestalWidth - labelWidth) / 2;
+        int labelY = y - 15;  // 15 px above pedestal
+        painter.setPen(Qt::white);
+        painter.drawText(labelX, labelY, label);
 
-    // Draw Silver pedestal
-    painter.setBrush(QColor(192, 192, 192)); // Silver
-    painter.drawRect(silverX, bottom - silverHeight, pedestalWidth, silverHeight);
 
-    // Draw Bronze pedestal
-    painter.setBrush(QColor(205, 127, 50)); // Bronze
-    painter.drawRect(bronzeX, bottom - bronzeHeight, pedestalWidth, bronzeHeight);
+        // Draw pedestal rectangle
+        painter.setBrush(pedestalColors[i]);
+        painter.setPen(Qt::black);
+        painter.drawRect(x, y, pedestalWidth, height);
 
-    // Draw labels
-    QFont font = painter.font();
-    font.setBold(true);
-    painter.setFont(font);
-    QFontMetrics fm(font);
+        QFont pedestalFont("Arial", 14, QFont::Bold);
+        painter.setFont(pedestalFont);
+        QFontMetrics fmPedestal(pedestalFont);
 
-    std::vector<QString> texts;
-    for (const auto &name: names) {
-        texts.push_back(QString::fromStdString(name));
+        int numberWidth = fmPedestal.horizontalAdvance(wins[i]);
+        painter.setPen(Qt::black);
+        painter.drawText(x + (pedestalWidth - numberWidth) / 2, y + 30, wins[i]);
+
+        // Draw "Wins" below number, also centered
+        QString winsStr = "Wins";
+        int winsWidth = fmPedestal.horizontalAdvance(winsStr);
+        painter.drawText(x + (pedestalWidth - winsWidth) / 2, y + 55, winsStr);
     }
-
-    while (texts.size() < 3) {
-        texts.emplace_back("N/A");
-    }
-
-    painter.setPen(Qt::white);
-    painter.drawText(bronzeX + (pedestalWidth - fm.horizontalAdvance(texts[2])) / 2,
-                     bottom - bronzeHeight - 10, texts[2]);
-
-    painter.drawText(goldX + (pedestalWidth - fm.horizontalAdvance(texts[0])) / 2,
-                     bottom - goldHeight - 10, texts[0]);
-
-    painter.drawText(silverX + (pedestalWidth - fm.horizontalAdvance(texts[1])) / 2,
-                     bottom - silverHeight - 10, texts[1]);
 }
 
-std::vector<std::string> ChampionsWidget::getTopThree() {
+
+std::vector<User> ChampionsWidget::getTopThree() {
     std::vector<User> users;
     try {
         for (const auto &entry: std::filesystem::directory_iterator("gameData")) {
@@ -84,12 +104,15 @@ std::vector<std::string> ChampionsWidget::getTopThree() {
             }
         }
         std::sort(users.begin(), users.end(), [](const User &lhs, const User &rhs) {
+            if (lhs.getWins() == rhs.getWins()) {
+                return lhs.getWLR() > rhs.getWLR();
+            }
             return lhs.getWins() > rhs.getWins();
         });
-        std::vector<std::string> answer;
+        std::vector<User> answer;
 
         for (int i = 0; i < std::min<int>(3, users.size()); ++i) {
-            answer.push_back(users[i].getUsername());
+            answer.push_back(users[i]);
         }
         return answer;
 

@@ -6,11 +6,12 @@
 #define WORDLADDER_CHAMPIONSWIDGET_H
 
 #include <QWidget>
+#include "../game/User.h"
 
 class ChampionsWidget : public QWidget {
 Q_OBJECT
 private:
-    static std::vector<std::string> getTopThree();
+    static std::vector<User> getTopThree();
 public:
     explicit ChampionsWidget(QWidget *parent = nullptr);
 
