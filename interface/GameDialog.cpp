@@ -99,9 +99,9 @@ void GameDialog::onSubmitButtonClicked() {
 GameDialog::GameDialog(const Dictionary &dictionary, QWidget *parent) : QDialog(parent),
                                                                         dictionary(dictionary) {
 
-    //TODO pick 2 random words
-    sourceWord = "accept";
-    targetWord = "accuse";
+    auto [start, end] = dictionary.getRandomPair();
+    sourceWord = std::move(start);
+    targetWord = std::move(end);
     setUpUI();
     setUpConnections();
 }
