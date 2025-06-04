@@ -67,10 +67,14 @@ public:
         return {distances, prev};
     }
 
-    const std::unordered_set<T> &getAdjacencyList(T node) const {
+    std::unordered_set<T> getAdjacencyList(T node) const {
         if (nodeIds.count(node) == 0) throw std::invalid_argument("The node does not exist in the graph");
         int id = nodeIds.at(node);
-        return adj[id];
+        std::unordered_set<T> answer;
+        for (const auto &nodeId: adj.at(id)) {
+            answer.insert(reverseNodeIds.at(nodeId));
+        }
+        return answer;
     }
 };
 
