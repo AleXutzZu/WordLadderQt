@@ -6,6 +6,7 @@
 #include <fstream>
 #include <QFile>
 #include <QTextStream>
+#include <random>
 
 void Dictionary::load(const std::string &filePath) {
     QFile input(QString::fromStdString(filePath));
@@ -18,6 +19,7 @@ void Dictionary::load(const std::string &filePath) {
         if (word.size() < 100) {
             auto res = graph.addNode(word);
             if (!res) continue;
+            nonEmptyBuckets.insert(word.size());
             buckets[word.size()].push_back(std::move(word));
         }
     }
@@ -47,4 +49,19 @@ void Dictionary::load(const std::string &filePath) {
 
 const Graph<std::string> &Dictionary::getGraph() const {
     return graph;
+}
+
+std::pair<std::string, std::string> Dictionary::getRandomPair() const {
+    std::random_device rd;
+    std::mt19937 engine(rd());
+    std::uniform_int_distribution<int> distribution1(0, nonEmptyBuckets.size() - 1);
+
+    std::vector<int> bucketIndices(nonEmptyBuckets.begin(), nonEmptyBuckets.end());
+
+    int bucket = bucketIndices[distribution1(engine)];
+
+    std::uniform_int_distribution<int> distribution2(0, buckets[bucket].size() - 1);
+    int word1 = distribution2(engine);
+    int word2 = distribution2(engine);
+    return {buckets[bucket][word1], buckets[bucket][word2]};
 }
