@@ -57,3 +57,8 @@ void User::saveGame(const GameData &gameData) {
     gameFile << gameData << '\n';
     games.push_back(gameData);
 }
+
+bool User::isUsernameUnknown(const std::string &username) {
+    std::filesystem::path path("gameData/" + username + ".csv");
+    return !std::filesystem::exists(path);
+}

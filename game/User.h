@@ -27,6 +27,7 @@ public:
 
     void saveGame(const GameData &gameData);
 
+    static bool isUsernameUnknown(const std::string &username);
 };
 
 
