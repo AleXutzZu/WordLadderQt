@@ -21,6 +21,7 @@ private:
     const Dictionary &dictionary;
 
     void setUpUI();
+    void setUpConnections();
 
 public:
 

@@ -4,10 +4,12 @@
 
 #include "MainWindow.h"
 #include "AnalysisWidget.h"
+#include "PlayWidget.h"
 #include <QToolBar>
 
 MainWindow::MainWindow(const Dictionary &dictionary, QWidget *parent) : QMainWindow(parent), dictionary(dictionary) {
     setUpUI();
+    setUpConnections();
 }
 
 void MainWindow::setUpUI() {
@@ -40,6 +42,18 @@ void MainWindow::setUpUI() {
 
     stack = new QStackedWidget(this);
     stack->addWidget(new AnalysisWidget(dictionary));
-
+    stack->addWidget(new PlayWidget(dictionary));
     setCentralWidget(stack);
+}
+
+void MainWindow::setUpConnections() {
+    connect(analysisAction, &QAction::triggered, this, [this]() {
+        stack->setCurrentIndex(0);
+    });
+    connect(playAction, &QAction::triggered, this, [this]() {
+        stack->setCurrentIndex(1);
+    });
+    connect(leaderboardAction, &QAction::triggered, this, [this]() {
+        stack->setCurrentIndex(2);
+    });
 }
