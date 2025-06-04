@@ -61,9 +61,12 @@ void LeaderboardWidget::setUpUI() {
 
     auto leaderboardLayout = new QVBoxLayout;
 
+    top = new ChampionsWidget(this);
     refreshLeaderboard = new QPushButton("Refresh", this);
-
-    leaderboardLayout->addWidget(refreshLeaderboard);
+    leaderboardLayout->addStretch(1);
+    leaderboardLayout->addWidget(top, 1, Qt::AlignCenter);
+    leaderboardLayout->addWidget(refreshLeaderboard, 1);
+    leaderboardLayout->addStretch(1);
     mainLayout->addLayout(leaderboardLayout, 1);
     setLayout(mainLayout);
 }

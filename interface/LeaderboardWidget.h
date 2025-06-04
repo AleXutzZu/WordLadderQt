@@ -10,6 +10,7 @@
 #include <QPushButton>
 #include <QLabel>
 #include <QGroupBox>
+#include "ChampionsWidget.h"
 
 class LeaderboardWidget : public QWidget {
 Q_OBJECT
@@ -26,6 +27,8 @@ private:
     QLabel *lastGame;
 //    QLabel *longestStreak;
     QWidget *statsGroup;
+
+    ChampionsWidget *top;
 
     void setUpUI();
 
