@@ -37,6 +37,13 @@ private:
     QString getCurrentWord();
 public:
     explicit GameDialog(const Dictionary &dictionary, QWidget *parent = nullptr);
+
+    int getHints() const;
+
+    int getMoves() const;
+
+    bool hasWon() const;
+
 protected:
     void keyPressEvent(QKeyEvent *event) override;
 

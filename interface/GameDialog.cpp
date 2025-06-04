@@ -145,3 +145,15 @@ void GameDialog::closeEvent(QCloseEvent *event) {
     quitButton->click();
     event->ignore();
 }
+
+int GameDialog::getHints() const {
+    return hints;
+}
+
+int GameDialog::getMoves() const {
+    return moves;
+}
+
+bool GameDialog::hasWon() const {
+    return won;
+}
