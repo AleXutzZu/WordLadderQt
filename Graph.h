@@ -66,6 +66,12 @@ public:
 
         return {distances, prev};
     }
+
+    const std::unordered_set<T> &getAdjacencyList(T node) const {
+        if (nodeIds.count(node) == 0) throw std::invalid_argument("The node does not exist in the graph");
+        int id = nodeIds.at(node);
+        return adj[id];
+    }
 };
 
 #endif //WORDLADDER_GRAPH_H
