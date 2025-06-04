@@ -11,6 +11,7 @@
 #include <QListView>
 #include <QListWidget>
 #include "../Dictionary.h"
+#include "../game/GameData.h"
 
 class GameDialog : public QDialog {
 Q_OBJECT
@@ -38,11 +39,7 @@ private:
 public:
     explicit GameDialog(const Dictionary &dictionary, QWidget *parent = nullptr);
 
-    int getHints() const;
-
-    int getMoves() const;
-
-    bool hasWon() const;
+    GameData getGameResult() const;
 
 protected:
     void keyPressEvent(QKeyEvent *event) override;

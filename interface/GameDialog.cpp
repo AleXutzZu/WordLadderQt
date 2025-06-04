@@ -146,14 +146,6 @@ void GameDialog::closeEvent(QCloseEvent *event) {
     event->ignore();
 }
 
-int GameDialog::getHints() const {
-    return hints;
-}
-
-int GameDialog::getMoves() const {
-    return moves;
-}
-
-bool GameDialog::hasWon() const {
-    return won;
+GameData GameDialog::getGameResult() const {
+    return {QDate::currentDate(), won, moves, hints};
 }
