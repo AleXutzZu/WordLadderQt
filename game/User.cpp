@@ -62,3 +62,7 @@ bool User::isUsernameUnknown(const std::string &username) {
     std::filesystem::path path("gameData/" + username + ".csv");
     return !std::filesystem::exists(path);
 }
+
+const std::string &User::getUsername() const {
+    return username;
+}
