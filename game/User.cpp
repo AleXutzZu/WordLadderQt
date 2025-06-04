@@ -66,3 +66,8 @@ bool User::isUsernameUnknown(const std::string &username) {
 const std::string &User::getUsername() const {
     return username;
 }
+
+std::string User::getLastGame() const {
+    if (games.empty()) return "Unknown";
+    return games.back().getTimestamp().toString("dd/MM/yyyy").toStdString();
+}

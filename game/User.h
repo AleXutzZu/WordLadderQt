@@ -25,6 +25,8 @@ public:
 
     [[nodiscard]] float getWLR() const;
 
+    std::string getLastGame() const;
+
     void saveGame(const GameData &gameData);
 
     static bool isUsernameUnknown(const std::string &username);
