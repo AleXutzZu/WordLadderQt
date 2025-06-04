@@ -7,6 +7,8 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QLabel>
+#include <QMessageBox>
+#include "../game/User.h"
 
 PlayWidget::PlayWidget(const Dictionary &dictionary, QWidget *parent) : QWidget(parent),
                                                                         dictionary(dictionary) {
@@ -39,7 +41,14 @@ void PlayWidget::setUpConnections() {
 }
 
 void PlayWidget::onPlayButtonClicked() {
+    QString user = username->text().trimmed();
+    if (user.isEmpty()) {
+        QMessageBox::warning(this, "Invalid input", "Username may not be empty");
+    }
+
     GameDialog dialog(dictionary, this);
     dialog.exec();
-    //TODO Results here
+    auto data = dialog.getGameResult();
+    User userData(user.toStdString());
+    userData.saveGame(data);
 }
