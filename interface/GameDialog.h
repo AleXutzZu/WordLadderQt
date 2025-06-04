@@ -9,6 +9,7 @@
 #include <QLineEdit>
 #include <QPushButton>
 #include <QListView>
+#include <QListWidget>
 #include "../Dictionary.h"
 
 class GameDialog : public QDialog {
@@ -19,7 +20,7 @@ private:
     QPushButton *getAHint;
 
     QPushButton *quitButton;
-
+    QListWidget *currentState;
 
     std::string sourceWord;
     std::string targetWord;
@@ -32,15 +33,21 @@ private:
 
     const Dictionary &dictionary;
 
+    void insertWord(const QString &label);
+    QString getCurrentWord();
 public:
     explicit GameDialog(const Dictionary &dictionary, QWidget *parent = nullptr);
+protected:
+    void keyPressEvent(QKeyEvent *event) override;
+
+    void closeEvent(QCloseEvent *event) override;
 
 private slots:
     void onQuitButtonClicked();
 
     void onSubmitButtonClicked();
 
-//    void onHintButtonClicked();
+    void onHintButtonClicked();
 };
 
 
