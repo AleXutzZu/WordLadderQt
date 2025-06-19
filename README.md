@@ -50,4 +50,25 @@ Keep track of player performance and competition:
   - 🥉 Bronze (3rd place)
 - All data is saved per player in local CSV files and persists across sessions.
 
+## 📸 Screenshots
+
+<table>
+  <tr>
+    <td rowspan="2" style="width:50%;">
+      <img src="https://github.com/user-attachments/assets/c9d979dc-7fd0-461d-b797-556827129177" alt="Analysis tab" style="width:100%;">
+    </td>
+    <td>
+      <img src="https://github.com/user-attachments/assets/34bc7ed0-1d99-4e46-9ef7-9e0d81e49f30" alt="Stats tab" style="width:100%;">
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <img src="https://github.com/user-attachments/assets/4c984fb8-a187-4d0e-9998-bdbb0dd54810" alt="Playing a game" style="width:100%;">
+    </td>
+  </tr>
+</table>
+
+
+
+
 
